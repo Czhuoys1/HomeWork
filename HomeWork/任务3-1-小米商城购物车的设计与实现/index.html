@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>洛樊购物车</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<!-- 229970544 卓玉晟 -->
+<body>
+    <div id="app"></div>
+    <template id="root">
+        <!-- 页面顶部内容 -->
+        <div class="header">
+            <div class="header-content">
+                <img class="logo" src="https://cdn.cnbj1.fds.api.mi-img.com/mi.com-assets/shop/img/logo-mi2.png"
+                    alt="小米商城">
+                <h2>我的购物车</h2>
+                <span class="tip">温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</span>
+                <div class="user-info">
+                    <span class="username">luofan</span>
+                    <span class="order-link">| 我的订单</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 购物车内容 -->
+        <div class="cart-container">
+            <table border="1">
+                <tr>
+                    <th><input type="checkbox" v-model="chackedAll">全选</input></th>
+                    <th>图片</th>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                    <th>操作</th>
+                </tr>
+                <tr v-for="(item, index) in goodsList" :key="item.id">
+                    <td><input type="checkbox" v-model="item.chacked"></td>
+                    <td><img :src="item.img" alt="商品图片"></td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price }}元</td>
+                    <td>
+                        <div class="quantity-selector">
+                            <button @click="delGoods(index)" :disabled="item.count <= 0">-</button>
+                            <span>{{ item.count }}</span>
+                            <button @click="addGoods(index)">+</button>
+                        </div>
+                    </td>
+                    <td>{{ item.count * item.price }}元</td>
+                    <td><button @click="removeNode()" class="delete">x</button></td>
+                </tr>
+            </table>
+            <div class="footer">
+                <div class="left-section">
+                    <button>继续购物</button>
+                    <span>已选择 {{ totalCount() }} 件</span>
+                </div>
+                <div class="right-section">
+                    <span>合计：{{ totalPrice() }}元</span>
+                    <button>去结算</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</body>
+<!-- 这里 我使用type="module"的形式是方便引入我的数据文件，这样方便一点 -->
+<script type="module">
+    import { goodsList } from './js/script.js';
+    const app = Vue.createApp({
+        template: "#root",
+        data() {
+            return {
+                goodsList
+            }
+        },
+        methods: {
+            //计算总价
+            totalPrice() {
+                let sum = 0
+                this.goodsList.forEach(g => {
+                    if (g.chacked) {
+                        sum += g.price * g.count
+                    }
+                });
+                return sum
+            },
+            //添加商品数量
+            addGoods(index) {
+                this.goodsList[index].count++;
+            },
+            //删除商品数量
+            delGoods(index) {
+                if (this.goodsList[index].count > 0) {
+                    this.goodsList[index].count--;
+                }
+            },
+            //删除商品
+            removeNode(index) {
+                this.goodsList.splice(index, 1);
+            },
+            //计算商品数量
+            totalCount() {
+                let sunCount = 0
+                this.goodsList.forEach(g => {
+                    if (g.chacked) {
+                        sunCount += g.count
+                    }
+                })
+                return sunCount
+            }
+
+        },
+        computed: {
+            //检查全选按钮的状态
+            chackedAll: {
+                get() {
+                    return this.goodsList.every(g => g.chacked)
+                },
+                set(value) {
+                    this.goodsList.forEach(g => {
+                        g.chacked = value
+                    });
+                }
+            }
+        }
+    });
+    app.mount('#app')
+</script>
+
+</html>
