@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            display: flex;
+        }
+
+        .pageRight {
+            background-color: black;
+            width: 100%;
+            position: relative;
+            /* 设置相对定位 */
+        }
+
+        .pageImg {
+            background: url(https://cdn.web-global.fds.api.mi-img.com/mcfe--mi-account/static/static/media/banner.92c693b4..jpg) no-repeat;
+            background-size: cover;
+            width: 30%;
+            height: 100vh;
+        }
+
+        .pageTitle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mi-header__title {
+            display: flex;
+            align-items: center;
+        }
+
+        .mi-header__nav {
+            display: flex;
+            margin-right: 20px;
+            justify-content: space-between;
+            width: 30%;
+        }
+
+        a {
+            text-decoration: none;
+            color: #838383;
+            font-size: 14px;
+            outline: none;
+        }
+
+        select {
+            background-color: #000;
+            color: #838383;
+            border: none;
+            outline: none;
+        }
+
+        h2 {
+            color: #ffffffcc;
+            margin-left: 10px;
+            font-size: 26px;
+            font-weight: 500;
+        }
+
+        .pageContent {
+            border-radius: 4px;
+            box-shadow: 0 20px 50px 0 hsla(0, 0%, 64%, .1);
+            margin: 0 auto 80px;
+            padding: 40px 45px;
+            box-sizing: border-box;
+            display: inline-block;
+            overflow: hidden;
+            position: relative;
+            background-color: rgb(36, 36, 36);
+            width: 450px;
+            height: 550px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header span {
+            font-size: 22px;
+            font-weight: 400;
+            color: #bbb;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .form-header .active {
+            color: #ddd;
+            border-bottom: 2px solid #ff6700;
+        }
+
+        .form-content {
+            width: 100%;
+        }
+
+        .form-item {
+            margin-bottom: 20px;
+        }
+
+        .form-item label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b0b0b0;
+        }
+
+        .country-select select,
+        .phone-input .input-group,
+        .code-input .input-group {
+            width: 100%;
+            height: 60px;
+            background-color: #424242;
+            border: 1px solid #424242;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .country-select select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23B0B0B0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 30px;
+            color: #b0b0b0;
+        }
+
+        .phone-input .input-group span,
+        .code-input .input-group input {
+            color: #b0b0b0;
+        }
+
+        .phone-input .input-group input,
+        .code-input .input-group input {
+            flex: 1;
+            background: transparent;
+            font-size: 17px;
+            border: none;
+            color: #AAA;
+            outline: none;
+        }
+
+        .code-input .input-group button {
+            margin-left: 10px;
+            background: transparent;
+            border: none;
+            color: #ff6700;
+            cursor: pointer;
+        }
+
+        .agreement {
+            display: flex;
+            align-items: center;
+        }
+
+        .agreement input {
+            margin-right: 5px;
+        }
+
+        .agreement label,
+        .agreement a {
+            color: #b0b0b0;
+        }
+
+        .agreement a {
+            color: #ff6700;
+            text-decoration: none;
+        }
+
+        .register-btn {
+            width: 100%;
+            height: 40px;
+            background-color: #ff6700;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .help-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .help-link a {
+            color: #ff6700;
+            text-decoration: none;
+        }
+
+        .other-login-list {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 10px;
+        }
+        .other-login-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: white; /* 透明背景 */
+            box-shadow: none;        /* 去掉阴影 */
+            transition: transform 0.2s;
+        }
+        .other-login-item:hover {
+            transform: scale(1.08);
+        }
+        .other-login-item svg {
+            width: 40px;
+            height: 40px;
+            display: block;
+        }
+        .input-error {
+            border: 1px solid #ff4d4f !important;
+        }
+        .placeholder-error::-webkit-input-placeholder { color: #ff4d4f !important; }
+        .placeholder-error::-moz-placeholder { color: #ff4d4f !important; }
+        .placeholder-error:-ms-input-placeholder { color: #ff4d4f !important; }
+        .placeholder-error::placeholder { color: #ff4d4f !important; }
+        .error-tip {
+            color: #ff4d4f;
+            font-size: 13px;
+            margin-top: 2px;
+            margin-bottom: 8px;
+        }
+
+        /* 错误状态样式 */
+        .input-group.error {
+            border-color: #ff4d4f !important;
+        }
+        .input-group.error input {
+            color: #ff4d4f;
+        }
+        .input-group.error input::placeholder {
+            color: #ff4d4f;
+        }
+        .error-tip {
+            color: #ff4d4f;
+            font-size: 12px;
+            line-height: 1.2;
+            min-height: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <template id="root">
+        <div class="content">
+            <div class="pageImg"></div>
+            <div class="pageRight">
+                <div class="pageTitle">
+                    <div class="mi-header__title">
+                        <!-- 这里是在官网拿的logo的svg，这样就可以不用本地存储资源 -->
+                        <svg class="_-src-components-Banner-logo" width="48" height="48" viewBox="0 0 48 48" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" style="margin-top: 10px;margin-left: 10px;">
+                            <g id="48*48">
+                                <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="48"
+                                    height="48">
+                                    <path id="Clip 2" fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M0 3.05176e-05H48V47.9998H0V3.05176e-05Z" fill="white"></path>
+                                </mask>
+                                <g mask="url(#mask0)">
+                                    <path id="Fill 1" fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M42.9972 5.015C38.4683 0.503953 31.9571 0 24.0001 0C16.0329 0 9.51214 0.509889 4.98532 5.03265C0.459587 9.55464 0 16.0649 0 24.0234C0 31.9816 0.459587 38.4954 4.98719 43.018C9.51418 47.5421 16.0334 47.9998 24.0001 47.9998C31.9665 47.9998 38.4858 47.5421 43.013 43.018C47.5398 38.4939 48 31.9816 48 24.0234C48 16.0548 47.5343 9.53698 42.9972 5.015Z"
+                                        fill="#FF6900"></path>
+                                    <path id="Fill 3" fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M22.2335 32.8946C22.2335 33.0556 22.0979 33.1892 21.9328 33.1892H17.8394C17.6715 33.1892 17.5353 33.0556 17.5353 32.8946V22.19C17.5353 22.0276 17.6715 21.8946 17.8394 21.8946H21.9328C22.0979 21.8946 22.2335 22.0276 22.2335 22.19V32.8946Z"
+                                        fill="white"></path>
+                                    <path id="Fill 5" fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M30.248 32.8946C30.248 33.0556 30.1118 33.1892 29.9461 33.1892H26.0497C25.8826 33.1892 25.7464 33.0556 25.7464 32.8946V32.8546V23.6589C25.7423 22.0465 25.6501 20.3892 24.8177 19.5562C24.1019 18.8383 22.7672 18.6738 21.3787 18.6393H14.3157C14.149 18.6393 14.0144 18.7733 14.0144 18.9345V31.9287V32.8946C14.0144 33.0556 13.8769 33.1892 13.7102 33.1892H9.81124C9.64471 33.1892 9.51068 33.0556 9.51068 32.8946V15.1074C9.51068 14.9441 9.64471 14.8113 9.81124 14.8113H21.0604C24.0003 14.8113 27.0737 14.9454 28.5895 16.4632C30.1118 17.9877 30.248 21.0556 30.248 23.9989V32.8946Z"
+                                        fill="white"></path>
+                                    <path id="Fill 7" fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M38.2749 32.8946C38.2749 33.0556 38.1372 33.1892 37.9721 33.1892H34.0738C33.9072 33.1892 33.7718 33.0556 33.7718 32.8946V15.1074C33.7718 14.9441 33.9072 14.8113 34.0738 14.8113H37.9721C38.1372 14.8113 38.2749 14.9441 38.2749 15.1074V32.8946Z"
+                                        fill="white"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <h2>小米账号</h2>
+                    </div>
+                    <div class="mi-header__nav">
+                        <a href="#">用户协议</a>
+                        <a href="#">隐私政策</a>
+                        <a href="#">帮助中心</a>
+                        <a> | </a>
+                        <select v-model="languageChoice">
+                            <option value="1">中文(简体)</option>
+                            <option value="2">中文(繁体)</option>
+                            <option value="3">English</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="pageContent">
+                    <div class="form-header">
+                        <span :class="{active: activeTab==='login'}" @click="activeTab='login'">登录</span>
+                        <span :class="{active: activeTab==='register'}" @click="activeTab='register'">注册</span>
+                    </div>
+
+                    <div class="form-content">
+                        <!-- 登录表单 -->
+                        <div v-if="activeTab==='login'">
+                            <!-- 账号输入 -->
+                            <div class="form-item phone-input">
+                                <!-- 所有的输入框都用@blur监听输入动作，然后失去焦点时进行合法性检验 -->
+                                <!-- 合法性检验的提示效果用的是添加动态的class -->
+                                <div class="input-group" :class="{'error': loginAccountError}">
+                                    <input type="text" 
+                                        id="login-account" 
+                                        v-model="loginAccount" 
+                                        placeholder="邮箱/手机号/小米ID" 
+                                        @blur="validateLoginAccount"
+                                    >
+                                </div>
+                                <div class="error-tip">{{loginAccountError}}</div>
+                            </div>
+                            <!-- 密码输入 -->
+                            <div class="form-item phone-input">
+                                <div class="input-group" :class="{'error': loginPasswordError}">
+                                    <input :type="showPassword ? 'text' : 'password'" 
+                                        id="login-password" 
+                                        v-model="loginPassword" 
+                                        placeholder="密码"
+                                        @blur="validateLoginPassword"
+                                    >
+                                    <span style="cursor:pointer;margin-left:8px;" @click="showPassword = !showPassword">
+                                        <svg v-if="!showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 12C1 12 5 5 12 5C19 5 23 12 23 12C23 12 19 19 12 19C5 19 1 12 1 12Z" stroke="#b0b0b0" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="#b0b0b0" stroke-width="2"/></svg>
+                                        <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.94 17.94C16.11 19.25 14.13 20 12 20C5 20 1 12 1 12C2.23 9.94 3.87 8.14 5.81 6.81M9.5 9.5C10.03 9.18 10.68 9 11.5 9C13.43 9 15 10.57 15 12.5C15 13.32 14.82 13.97 14.5 14.5M9.5 9.5L14.5 14.5M9.5 9.5L5.81 6.81M14.5 14.5L17.94 17.94M14.5 14.5C14.18 14.82 13.53 15 12.5 15C10.57 15 9 13.43 9 11.5C9 10.47 9.18 9.82 9.5 9.5Z" stroke="#b0b0b0" stroke-width="2"/></svg>
+                                    </span>
+                                </div>
+                                <div class="error-tip">{{loginPasswordError}}</div>
+                            </div>
+                            <!-- 协议勾选 -->
+                            <div class="form-item agreement">
+                                <input type="checkbox" id="login-agreement" v-model="loginIsAgree">
+                                <label for="login-agreement">
+                                    已阅读并同意小米账号
+                                    <a href="#">用户协议</a>和<a href="#">隐私政策</a>
+                                </label>
+                            </div>
+                            <!-- 登录按钮 -->
+                            <button class="register-btn" @click="handleLogin" :disabled="!loginIsAgree">登录</button>
+                            <!-- 忘记密码/手机号登录 -->
+                            <div class="help-link" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+                                <a href="#" style="color:#ff6700;">忘记密码?</a>
+                                <a href="#" style="color:#ff6700;">手机号登录</a>
+                            </div>
+                            <!-- 其他方式登录  用的也是官网扒下来的svg -->
+                            <div style="text-align:center;margin-top:20px;color:#b0b0b0;">其他方式登录</div>
+                            <div class="other-login-list">
+                                <div class="other-login-item" title="支付宝">
+                                    <svg viewBox="0 0 46 46" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" aria-label="alipay" aria-hidden="true"><path d="M10.35 25.898c-.543.439-1.125 1.076-1.294 1.886-.23 1.109-.048 2.496 1.021 3.583 1.296 1.32 3.263 1.68 4.112 1.744 2.31.165 4.77-.978 6.626-2.285a14.633 14.633 0 003.162-3.133c-2.667-1.376-5.996-2.898-9.555-2.75-1.818.076-3.12.454-4.072.956zm33.821 6.09A22.878 22.878 0 0046.001 23C46 10.319 35.683 0 23 0S0 10.319 0 23c0 12.684 10.315 23 23 23 7.654 0 14.441-3.761 18.624-9.53-4.82-2.4-9.646-4.785-14.48-7.156-1.916 2.184-4.746 4.372-7.943 5.324-2.01.598-3.822.825-5.715.438-1.875-.383-3.257-1.261-4.062-2.142-.41-.449-.88-1.02-1.222-1.699.032.086.055.137.055.137s-.196-.337-.346-.876a4.202 4.202 0 01-.16-1.401c-.02-.362.005-.726.077-1.081.187-.91.575-1.967 1.58-2.952 2.203-2.157 5.154-2.274 6.684-2.265 2.265.014 6.201 1.005 9.515 2.178.918-1.957 1.507-4.048 1.886-5.44H13.717v-1.49h7.075v-2.982h-8.567v-1.489h8.565v-2.979c0-.41.081-.745.745-.745h3.352v3.724H34.2v1.49h-9.312v2.98h7.45s-.748 4.17-3.088 8.28c5.192 1.854 12.494 4.71 14.92 5.664z" fill="#1989fa"></path></svg>
+                                </div>
+                                <div class="other-login-item" title="微信">
+                                    <svg viewBox="0 0 46 46" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" aria-label="wechat" aria-hidden="true"><g fill="#50b674"><path d="M14.345 17.311a1.505 1.505 0 103.01 0 1.505 1.505 0 00-3.01 0zm6.74-.04a1.505 1.505 0 103.01 0 1.505 1.505 0 00-3.01 0zm3.756 6.732a1.045 1.045 0 102.09 0 1.045 1.045 0 00-2.09 0zm5.31.084a1.045 1.045 0 102.092 0 1.045 1.045 0 00-2.091 0z"></path><path d="M23 0A23.001 23.001 0 006.736 39.263 23 23 0 0046 22.999 22.984 22.984 0 0023 0zm-3.93 28.311c-1.212 0-2.175-.25-3.387-.501l-3.387 1.673.961-2.885c-2.426-1.674-3.849-3.849-3.849-6.525 0-4.601 4.35-8.197 9.662-8.197 4.725 0 8.906 2.886 9.743 6.774a6.763 6.763 0 00-.921-.042c-4.601 0-8.197 3.429-8.197 7.652.01.676.11 1.348.293 1.998-.335 0-.628.042-.92.042zm14.135 3.387l.71 2.426-2.634-1.463c-.961.25-1.924.502-2.885.502-4.601 0-8.199-3.136-8.199-6.974 0-3.837 3.596-6.984 8.196-6.984 4.35 0 8.197 3.136 8.197 6.984 0 2.133-1.423 4.057-3.387 5.52z"></path></g></svg>
+                                </div>
+                                <div class="other-login-item" title="QQ">
+                                    <svg viewBox="0 0 46 46" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" aria-label="qq" aria-hidden="true"><path d="M23 0C10.31 0 0 10.31 0 23s10.31 23 23 23 23-10.31 23-23S35.69 0 23 0zm10.363 29.926c-.053.053-.106.053-.159.106-.634-.159-1.374-.74-1.692-1.216-.158-.159-.211-.423-.475-.53 0 .953-.582 1.852-1.005 2.486-.159.211-.635.582-.635.793.16.106.37.159.582.212.476.211 1.163.581 1.428 1.004.105.159.264.317.317.476.74 1.745-1.64 2.168-2.855 2.432s-3.49-.476-4.124-.846c-.37-.264-.74-.846-1.322-.846-.159.106-.635.053-.9.053-.74 1.48-4.6 2.168-6.661 1.375-.635-.212-1.956-.793-1.692-1.798.211-.846.899-1.322 1.586-1.639.264-.159.846-.211 1.005-.476-.582-.423-1.11-1.269-1.375-1.956-.159-.37-.212-1.163-.423-1.428-.37.529-1.428 1.64-2.326 1.48-.16-.21-.318-.422-.423-.687-.212-.687-.106-1.797.105-2.432.37-1.322.74-2.273 1.428-3.225.211-.317.529-.529.74-.846-.423-.423-.317-1.692-.053-2.22.159-.37.423-.318.476-.9-.106-.158 0-.37-.053-.581-.211-.952.159-2.115.423-2.855.9-2.38 2.432-4.072 4.706-5.023.529-.212 1.163-.37 1.745-.476.264-.053.528 0 .74-.106 5.34-.053 8.037 2.75 9.041 7.032.159.688 0 1.586 0 2.274 1.216.264 1.48 2.696.476 3.384V23c.37.634.846 1.269 1.163 1.956.318.74.423 1.586.635 2.485.211.687-.106 2.274-.423 2.485z" fill="#18acfc"></path></svg>
+                                </div>
+                                <div class="other-login-item" title="微博">
+                                    <svg viewBox="0 0 46 46" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" aria-label="weibo" aria-hidden="true"><g fill="#ea5d5c"><path d="M20.156 21.662c-4.35.21-7.862 2.55-7.862 5.478s3.513 5.144 7.862 4.935c4.35-.21 7.862-2.97 7.862-5.897-.042-2.885-3.555-4.725-7.862-4.516zm2.927 7.402c-1.338 1.756-3.972 2.593-6.523 1.17-1.213-.668-1.171-1.965-1.171-1.965s-.502-4.14 3.847-4.642c4.391-.543 5.186 3.68 3.847 5.437z"></path><path d="M20.156 26.262a.613.613 0 00-.167.836c.125.251.502.293.752.084.251-.21.377-.585.21-.836-.126-.251-.46-.293-.795-.084zm-2.05.585a1.53 1.53 0 00-1.38 1.506c0 .67.67 1.17 1.465 1.087.794-.083 1.463-.71 1.463-1.422s-.627-1.254-1.547-1.17z"></path><path d="M23 0C10.287 0 0 10.287 0 23s10.287 23 23 23 23-10.287 23-23S35.713 0 23 0zm8.866 28.144c-1.799 3.847-7.695 5.73-12.044 5.394-4.14-.334-9.493-1.714-10.036-6.816 0 0-.293-2.3 1.923-5.269 0 0 3.178-4.475 6.858-5.77 3.722-1.255 4.14.877 4.14 2.174-.209 1.087-.543 1.714.837 1.296 0 0 3.638-1.715 5.143-.21 1.213 1.214.21 2.928.21 2.928s-.502.544.543.753c.962.167 4.224 1.673 2.425 5.52zm-3.597-10.622a.733.733 0 01-.71-.71c0-.42.334-.712.71-.712 0 0 4.475-.836 3.931 4.015v.083a.723.723 0 01-.71.628.705.705 0 01-.712-.711c0-.084.711-3.304-2.509-2.593zm7.57 4.642c-.126.836-.544.502-1.004.502-.586 0-1.046-.753-1.046-1.339 0-.501.21-1.003.21-1.003.041-.21.543-1.547-.335-3.513-1.59-2.718-4.768-2.718-5.144-2.593-.376.168-.962.251-.962.251-.585 0-1.045-.46-1.045-1.045 0-.502.334-.878.752-1.004 0 0 0 .042.042.042s.084.042.084.042c.46-.084 2.049-.21 3.554.167 2.802.67 6.566 3.764 4.893 9.493z"></path></g></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 注册表单 -->
+                        <div v-else>
+                            <!-- 国家/地区选择 -->
+                            <div class="form-item country-select">
+                                <select id="country" v-model="selectedCountry">
+                                    <option value="1">中国</option>
+                                    <option value="2">中国，澳门</option>
+                                    <option value="3">中国，台湾</option>
+                                    <option value="4">中国，香港</option>
+                                </select>
+                            </div>
+                            <!-- 手机号输入 -->
+                            <div class="form-item phone-input">
+                                <div class="input-group" :class="{'error': phoneNumberError}">
+                                    <span>手机号</span> <br>
+                                    <span>+86</span>
+                                    <input type="text" 
+                                        id="phone" 
+                                        v-model="phoneNumber" 
+                                        placeholder="请输入手机号" 
+                                        @blur="validatePhoneNumber"
+                                    >
+                                </div>
+                                <div class="error-tip">{{phoneNumberError}}</div>
+                            </div>
+                            <!-- 验证码输入及获取 -->
+                            <div class="form-item code-input">
+                                <div class="input-group" :class="{'error': verificationCodeError}">
+                                    <input type="text" 
+                                        id="code" 
+                                        v-model="verificationCode" 
+                                        placeholder="请输入验证码" 
+                                        @blur="validateVerificationCode"
+                                    >
+                                    <button @click="sendVerificationCode" :disabled="isSendingCode || !isPhoneValid">
+                                        {{ codeButtonText }}
+                                    </button>
+                                </div>
+                                <div class="error-tip">{{verificationCodeError}}</div>
+                            </div>
+                            <!-- 协议勾选 -->
+                            <div class="form-item agreement">
+                                <input type="checkbox" id="agreement" v-model="isAgree">
+                                <label for="agreement">
+                                    已阅读并同意小米账号
+                                    <a href="#">用户协议</a>和<a href="#">隐私政策</a>
+                                </label>
+                            </div>
+                            <!-- 注册按钮 -->
+                            <button class="register-btn" @click="handleRegister" :disabled="!isAgree">注册</button>
+                            <!-- 收不到验证码链接 -->
+                            <div class="help-link">
+                                <a href="#">收不到验证码？</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pageFooter"></div>
+            </div>
+        </div>
+    </template>
+
+
+</body>
+<script>
+    const { ref, computed } = Vue
+    const app = Vue.createApp({
+        template: '#root',
+        setup() {
+            // 登录/注册选项卡
+            const activeTab = ref('login')
+            // 注册表单
+            const selectedCountry = ref('1')
+            const phoneNumber = ref('')
+            const verificationCode = ref('')
+            const isAgree = ref(false)
+            // 注册验证码倒计时
+            const isSendingCode = ref(false)
+            const codeButtonText = ref('获取验证码')
+            let codeTimer = null
+            // 登录表单
+            const loginAccount = ref('')
+            const loginPassword = ref('')
+            const showPassword = ref(false)
+            const loginIsAgree = ref(false)
+            // 错误提示
+            const loginAccountError = ref('')
+            const loginPasswordError = ref('')
+            const phoneNumberError = ref('')
+            const verificationCodeError = ref('')
+            // 语言选择
+            const languageChoice = ref('1')
+
+            // 验证手机号是否有效的计算属性
+            const isPhoneValid = computed(() => {
+                return /^1[3-9]\d{9}$/.test(phoneNumber.value);
+            })
+
+            // 验证函数
+            function validateLoginAccount() {
+                if (!loginAccount.value.trim()) {
+                    loginAccountError.value = '请输入账号';
+                    return false;
+                }
+                loginAccountError.value = '';
+                return true;
+            }
+
+            function validateLoginPassword() {
+                if (!loginPassword.value) {
+                    loginPasswordError.value = '请输入密码';
+                    return false;
+                }
+                if (loginPassword.value.length < 6) {
+                    loginPasswordError.value = '密码长度不能少于6位';
+                    return false;
+                }
+                loginPasswordError.value = '';
+                return true;
+            }
+
+            function validatePhoneNumber() {
+                if (!phoneNumber.value) {
+                    phoneNumberError.value = '请输入手机号';
+                    return false;
+                }
+                if (!/^1[3-9]\d{9}$/.test(phoneNumber.value)) {
+                    phoneNumberError.value = '请输入正确的手机号';
+                    return false;
+                }
+                phoneNumberError.value = '';
+                return true;
+            }
+
+            function validateVerificationCode() {
+                if (!verificationCode.value) {
+                    verificationCodeError.value = '请输入验证码';
+                    return false;
+                }
+                if (!/^\d{6}$/.test(verificationCode.value)) {
+                    verificationCodeError.value = '验证码为6位数字';
+                    return false;
+                }
+                verificationCodeError.value = '';
+                return true;
+            }
+
+            // 注册验证码倒计时逻辑
+            function sendVerificationCode() {
+                if (isSendingCode.value) return;
+                if (!validatePhoneNumber()) return;
+                
+                // 生成6位随机验证码
+                const randomCode = Math.floor(100000 + Math.random() * 900000);
+                alert(`验证码：${randomCode}`);
+    
+
+                isSendingCode.value = true;
+                let count = 60;
+                codeButtonText.value = `${count}s后重试`;
+                codeTimer = setInterval(() => {
+                    count--;
+                    if (count > 0) {
+                        codeButtonText.value = `${count}s后重试`;
+                    } else {
+                        clearInterval(codeTimer);
+                        isSendingCode.value = false;
+                        codeButtonText.value = '获取验证码';
+                    }
+                }, 1000);
+            }
+
+            // 注册按钮点击
+            function handleRegister() {
+                const isPhoneValid = validatePhoneNumber();
+                const isCodeValid = validateVerificationCode();
+                
+                if (!isPhoneValid || !isCodeValid) return;
+                
+                if (!isAgree.value) {
+                    alert('请阅读并同意用户协议');
+                    return;
+                }
+
+                alert(`注册成功，手机号：${phoneNumber.value}，验证码：${verificationCode.value}`);
+            }
+
+            // 登录按钮点击
+            function handleLogin() {
+                const isAccountValid = validateLoginAccount();
+                const isPasswordValid = validateLoginPassword();
+                
+                if (!isAccountValid || !isPasswordValid) return;
+                
+                if (!loginIsAgree.value) {
+                    alert('请阅读并同意用户协议');
+                    return;
+                }
+
+                alert(`登录成功，账号：${loginAccount.value}，密码：${loginPassword.value}`);
+            }
+
+            return {
+                activeTab,
+                selectedCountry,
+                phoneNumber,
+                verificationCode,
+                isAgree,
+                isSendingCode,
+                codeButtonText,
+                sendVerificationCode,
+                handleRegister,
+                loginAccount,
+                loginPassword,
+                showPassword,
+                loginIsAgree,
+                handleLogin,
+                languageChoice,
+                // 错误提示
+                loginAccountError,
+                loginPasswordError,
+                phoneNumberError,
+                verificationCodeError,
+                // 验证方法
+                validateLoginAccount,
+                validateLoginPassword,
+                validatePhoneNumber,
+                validateVerificationCode,
+                // 计算属性
+                isPhoneValid
+            }
+        }
+    })
+
+    app.mount('#app')
+</script>
+
+</html>
