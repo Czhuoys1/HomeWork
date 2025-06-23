@@ -1,0 +1,1 @@
+import{_ as s,r as t,c as o,a as n,d as r,t as c,o as p}from"./index-CnkIrXNN.js";const _={__name:"openMe",setup(l){const a=t("nihao");return(d,e)=>(p(),o("div",null,[e[0]||(e[0]=n("h1",null,"打开我！ 只会浪费你的流量，其实这里什么都没有",-1)),r(" "+c(a.value),1)]))}},i=s(_,[["__scopeId","data-v-be2375b8"]]);export{i as default};
